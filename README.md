@@ -1,6 +1,8 @@
 # Strava Data Backup
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/prakashsellathurai/strava-backup/backup.yaml?label=Backup)
+![GitHub License](https://img.shields.io/github/license/prakashsellathurai/strava-backup)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/prakashsellathurai/strava-backup)
+
 
 This project automatically backs up your Strava activities to a Git repository using GitHub Actions. It fetches your activities using the Strava API and saves them as individual JSON files in the `activities/` directory.
 
@@ -29,32 +31,38 @@ You can use this repository directly in your own GitHub Action to automate Strav
     - `STRAVA_CLIENT_SECRET`
     - `STRAVA_REFRESH_TOKEN`
 
-### Workflow Example
-Create a file like `.github/workflows/backup.yml` in your repository:
+### Usage
+To use this action in your own repository, create a workflow file (e.g., `.github/workflows/backup.yml`):
 
 ```yaml
 name: Strava Backup
 
 on:
   schedule:
-    - cron: '0 0 */3 * *' # Every 3 days
+    - cron: '0 0 * * *' # Run daily at midnight
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3
       - name: Strava Backup
         uses: prakashsellathurai/strava-backup@main
         with:
           client_id: ${{ secrets.STRAVA_CLIENT_ID }}
           client_secret: ${{ secrets.STRAVA_CLIENT_SECRET }}
           refresh_token: ${{ secrets.STRAVA_REFRESH_TOKEN }}
-          output_directory: 'activities' # Optional, defaults to 'activities'
 ```
+
+> [!IMPORTANT]
+> **Workflow Permissions**: You must ensure that your repository settings allow GitHub Actions to write to the repository. 
+> 1. Go to **Settings > Actions > General**.
+> 2. Under **Workflow permissions**, select **"Read and write permissions"**.
+> 3. Click **Save**.
 
 ## Setup
 
@@ -146,3 +154,7 @@ If the backup starts failing with authentication errors, your Refresh Token migh
 
 ### Missing Activities
 The script fetches activities in pages of 30. If you have a very large number of activities, the initial backup might take some time. The script prints its progress.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
