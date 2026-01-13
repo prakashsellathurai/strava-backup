@@ -2,6 +2,7 @@ import json
 import urllib.request
 import urllib.parse
 import sys
+import os
 
 def get_input(prompt):
     print(prompt, end=': ', flush=True)
@@ -44,11 +45,22 @@ def main():
         with urllib.request.urlopen(req) as response:
             result = json.loads(response.read().decode('utf-8'))
             
+        refresh_token = result.get('refresh_token')
         print("\nSUCCESS!")
         print("-" * 20)
-        print(f"Refresh Token: {result.get('refresh_token')}")
+        print(f"Refresh Token: {refresh_token}")
         print("-" * 20)
-        print("Please add this Refresh Token, your Client ID, and Client Secret to your GitHub Repository Secrets.")
+        
+        # Save to .env
+        env_content = f"""STRAVA_CLIENT_ID={client_id}
+STRAVA_CLIENT_SECRET={client_secret}
+STRAVA_REFRESH_TOKEN={refresh_token}
+"""
+        with open('.env', 'w') as f:
+            f.write(env_content)
+        
+        print("Credentials saved to .env file.")
+        print("You can now run 'python backup.py' to back up your activities.")
         
     except urllib.error.HTTPError as e:
         print(f"\nError: {e}")
@@ -62,3 +74,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
