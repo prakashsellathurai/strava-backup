@@ -65,7 +65,7 @@ def get_streams(activity_id, access_token):
     url = f"https://www.strava.com/api/v3/activities/{activity_id}/streams"
     headers = {'Authorization': f'Bearer {access_token}'}
     keys = "time,latlng,distance,altitude,velocity_smooth,heartrate,cadence,watts,temp,moving,grade_smooth"
-    params = {'keys': keys, 'key_by_type': 'true'}
+    params = {'keys': keys}
     
     try:
         res = requests.get(url, headers=headers, params=params, verify=False)
@@ -78,8 +78,7 @@ def get_streams(activity_id, access_token):
         print(f"Error fetching streams for {activity_id}: {e}")
         return None
 
-    activities = get_activities(token)
-    save_activities(activities, token)
+
 
 def create_gpx(activity, streams):
     """Creates a GPX XML string from activity and streams."""
