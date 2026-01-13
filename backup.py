@@ -29,8 +29,8 @@ def get_access_token():
         print(f"Error refreshing token: {res.text}")
         exit(1)
 
-def get_activities(access_token):
-    """Fetches all activities from Strava."""
+def get_activities(access_token, after=None):
+    """Fetches activities from Strava. If after is provided, fetches only activities after that timestamp."""
     print("Fetching activities...")
     activities_url = "https://www.strava.com/api/v3/athlete/activities"
     headers = {'Authorization': f'Bearer {access_token}'}
@@ -42,6 +42,9 @@ def get_activities(access_token):
     while True:
         print(f"Fetching page {page}...")
         params = {'per_page': per_page, 'page': page}
+        if after:
+            params['after'] = after
+            
         res = requests.get(activities_url, headers=headers, params=params, verify=False)
         data = res.json()
         
@@ -202,9 +205,32 @@ def main():
         print("Error: Missing environment variables. Please set STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET, and STRAVA_REFRESH_TOKEN.")
         exit(1)
 
+    # Find the latest activity start date
+    after_timestamp = None
+    if os.path.exists(ACTIVITIES_DIR):
+        latest_date = None
+        for filename in os.listdir(ACTIVITIES_DIR):
+            if filename.endswith('.json') and not filename.endswith('_streams.json'):
+                try:
+                    with open(os.path.join(ACTIVITIES_DIR, filename), 'r') as f:
+                        activity_data = json.load(f)
+                        start_date_str = activity_data.get('start_date')
+                        if start_date_str:
+                            from datetime import datetime
+                            # Strava dates are in ISO 8601 format: 2024-02-19T23:04:46Z
+                            start_date = datetime.strptime(start_date_str, "%Y-%m-%dT%H:%M:%SZ")
+                            if latest_date is None or start_date > latest_date:
+                                latest_date = start_date
+                except Exception as e:
+                    print(f"Error reading {filename}: {e}")
+        
+        if latest_date:
+            after_timestamp = int(latest_date.timestamp())
+            print(f"Found latest activity date: {latest_date}. Fetching activities after {after_timestamp}")
+
     token = get_access_token()
 
-    activities = get_activities(token)
+    activities = get_activities(token, after=after_timestamp)
     save_activities(activities, token)
 
 if __name__ == "__main__":
