@@ -7,7 +7,11 @@ import time
 CLIENT_ID = os.environ.get('STRAVA_CLIENT_ID')
 CLIENT_SECRET = os.environ.get('STRAVA_CLIENT_SECRET')
 REFRESH_TOKEN = os.environ.get('STRAVA_REFRESH_TOKEN')
-ACTIVITIES_DIR = 'activities'
+
+# Data Isolation: Use GITHUB_WORKSPACE if available (running as action)
+WORKSPACE = os.environ.get('GITHUB_WORKSPACE', '.')
+OUTPUT_DIR = os.environ.get('STRAVA_OUTPUT_DIR', 'activities')
+ACTIVITIES_DIR = os.path.join(WORKSPACE, OUTPUT_DIR)
 
 def get_access_token():
     """Exchanges the refresh token for a new access token."""

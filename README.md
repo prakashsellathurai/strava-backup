@@ -17,6 +17,45 @@ This project automatically backs up your Strava activities to a Git repository u
 - A Strava account
 - Git
 
+## Usage as a GitHub Action
+
+You can use this repository directly in your own GitHub Action to automate Strava backups.
+
+### Pre-requisites
+1.  **Create a Strava API Application**: Go to [Strava Settings](https://www.strava.com/settings/api) and create an application.
+2.  **Get a Refresh Token**: Use the `get_refresh_token.py` script in this repository or follow the OAuth flow to get a refresh token with `activity:read_all` scope.
+3.  **Add Secrets**: In your GitHub repository settings, add the following secrets:
+    - `STRAVA_CLIENT_ID`
+    - `STRAVA_CLIENT_SECRET`
+    - `STRAVA_REFRESH_TOKEN`
+
+### Workflow Example
+Create a file like `.github/workflows/backup.yml` in your repository:
+
+```yaml
+name: Strava Backup
+
+on:
+  schedule:
+    - cron: '0 0 */3 * *' # Every 3 days
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Strava Backup
+        uses: prakashsellathurai/strava-backup@main
+        with:
+          client_id: ${{ secrets.STRAVA_CLIENT_ID }}
+          client_secret: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          refresh_token: ${{ secrets.STRAVA_REFRESH_TOKEN }}
+          output_directory: 'activities' # Optional, defaults to 'activities'
+```
+
 ## Setup
 
 ### 1. Create a Strava Application

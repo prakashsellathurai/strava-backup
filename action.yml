@@ -1,0 +1,52 @@
+name: 'Strava Backup'
+description: 'Automatically backup your Strava activities and GPS data to a GitHub repository.'
+author: 'Prakash Sellathurai'
+branding:
+  icon: 'cloud-lightning'
+  color: 'orange'
+
+inputs:
+  client_id:
+    description: 'Strava API Client ID'
+    required: true
+  client_secret:
+    description: 'Strava API Client Secret'
+    required: true
+  refresh_token:
+    description: 'Strava API Refresh Token'
+    required: true
+  output_directory:
+    description: 'Directory to store the backup files'
+    required: false
+    default: 'activities'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        pip install -r ${{ github.action_path }}/requirements.txt
+
+    - name: Run backup script
+      shell: bash
+      env:
+        STRAVA_CLIENT_ID: ${{ inputs.client_id }}
+        STRAVA_CLIENT_SECRET: ${{ inputs.client_secret }}
+        STRAVA_REFRESH_TOKEN: ${{ inputs.refresh_token }}
+        STRAVA_OUTPUT_DIR: ${{ inputs.output_directory }}
+      run: |
+        python ${{ github.action_path }}/backup.py
+
+    - name: Commit and push if there are changes
+      shell: bash
+      run: |
+        git config --global user.name 'GitHub Action'
+        git config --global user.email 'action@github.com'
+        git add "${{ github.workspace }}/${{ inputs.output_directory }}"/*.json "${{ github.workspace }}/${{ inputs.output_directory }}"/*.gpx
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Backup Strava activities [skip ci]" && git push)
