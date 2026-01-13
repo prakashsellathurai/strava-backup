@@ -78,8 +78,84 @@ def get_streams(activity_id, access_token):
         print(f"Error fetching streams for {activity_id}: {e}")
         return None
 
+    activities = get_activities(token)
+    save_activities(activities, token)
+
+def create_gpx(activity, streams):
+    """Creates a GPX XML string from activity and streams."""
+    from datetime import datetime
+    
+    gpx_header = """<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="StravaBackup" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">"""
+    
+    # Metadata
+    name = activity.get('name', 'Activity')
+    time_str = activity.get('start_date', '')
+    gpx_metadata = f"""
+ <metadata>
+  <time>{time_str}</time>
+ </metadata>
+ <trk>
+  <name>{name}</name>
+  <trkseg>"""
+  
+    gpx_footer = """
+  </trkseg>
+ </trk>
+</gpx>"""
+
+    # Parse streams
+    # streams is a list of dicts: [{'type': 'latlng', 'data': [...]}, {'type': 'time', 'data': [...]}, ...]
+    # We need to pivot this to row-based data
+    stream_map = {s['type']: s['data'] for s in streams}
+    
+    if 'latlng' not in stream_map or 'time' not in stream_map:
+        return None
+        
+    latlngs = stream_map['latlng']
+    times = stream_map['time'] # These are usually offsets or timestamps? Strava API usually returns epochs if not specified otherwise, but check. 
+    # Actually streams 'time' is usually seconds from start. We need absolute time.
+    # But wait, strava streams 'time' is elapsed time in seconds.
+    # We need to construct absolute time.
+    start_date_obj = datetime.strptime(activity['start_date'], "%Y-%m-%dT%H:%M:%SZ")
+    start_timestamp = start_date_obj.timestamp()
+    
+    elevations = stream_map.get('altitude', [None] * len(latlngs))
+    heartrates = stream_map.get('heartrate', [None] * len(latlngs))
+    
+    trkpts = ""
+    for i in range(len(latlngs)):
+        lat, lon = latlngs[i]
+        ele = elevations[i]
+        hr = heartrates[i]
+        time_offset = times[i]
+        
+        # Calculate point time
+        point_time = datetime.fromtimestamp(start_timestamp + time_offset).strftime("%Y-%m-%dT%H:%M:%SZ")
+        
+        trkpts += f'\n   <trkpt lat="{lat}" lon="{lon}">'
+        if ele is not None:
+             trkpts += f'<ele>{ele}</ele>'
+        trkpts += f'<time>{point_time}</time>'
+        
+        # Extension for HR (using TPX format commonly supported)
+        if hr is not None:
+            trkpts += f"""<extensions>
+    <gpxtpx:TrackPointExtension xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1">
+     <gpxtpx:hr>{hr}</gpxtpx:hr>
+    </gpxtpx:TrackPointExtension>
+   </extensions>"""
+            
+        trkpts += '</trkpt>'
+        
+    # Inject xmlns for extension if needed
+    if 'heartrate' in stream_map:
+         gpx_header = gpx_header.replace('xmlns:xsi=', 'xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:xsi=')
+
+    return gpx_header + gpx_metadata + trkpts + gpx_footer
+
 def save_activities(activities, access_token):
-    """Saves activities and their streams to individual JSON files."""
+    """Saves activities to individual JSON files."""
     if not os.path.exists(ACTIVITIES_DIR):
         os.makedirs(ACTIVITIES_DIR)
         
@@ -96,12 +172,27 @@ def save_activities(activities, access_token):
             
         # Check and save streams
         streams_file_path = os.path.join(ACTIVITIES_DIR, f'{activity_id}_streams.json')
-        if not os.path.exists(streams_file_path):
+        gpx_file_path = os.path.join(ACTIVITIES_DIR, f'{activity_id}.gpx')
+        
+        if not os.path.exists(streams_file_path) or not os.path.exists(gpx_file_path):
             streams = get_streams(activity_id, access_token)
             if streams:
-                with open(streams_file_path, 'w') as f:
-                    json.dump(streams, f, indent=2)
-                print(f"Saved streams for {activity_id}")
+                # Save Streams JSON
+                if not os.path.exists(streams_file_path):
+                    with open(streams_file_path, 'w') as f:
+                        json.dump(streams, f, indent=2)
+                    print(f"Saved streams for {activity_id}")
+
+                # Save GPX
+                if not os.path.exists(gpx_file_path):
+                    gpx_content = create_gpx(activity, streams)
+                    if gpx_content:
+                        with open(gpx_file_path, 'w') as f:
+                            f.write(gpx_content)
+                        print(f"Saved GPX for {activity_id}")
+                    else:
+                        print(f"Skipped GPX for {activity_id} (missing latlng)")
+                        
                 # Rate limit safety
                 time.sleep(1) 
             
