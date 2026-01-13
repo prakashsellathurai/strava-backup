@@ -58,8 +58,28 @@ def get_activities(access_token):
     print(f"Total activities fetched: {len(all_activities)}")
     return all_activities
 
-def save_activities(activities):
-    """Saves activities to individual JSON files."""
+
+
+def get_streams(activity_id, access_token):
+    """Fetches activity streams (GPS, heart rate, etc)."""
+    url = f"https://www.strava.com/api/v3/activities/{activity_id}/streams"
+    headers = {'Authorization': f'Bearer {access_token}'}
+    keys = "time,latlng,distance,altitude,velocity_smooth,heartrate,cadence,watts,temp,moving,grade_smooth"
+    params = {'keys': keys, 'key_by_type': 'true'}
+    
+    try:
+        res = requests.get(url, headers=headers, params=params, verify=False)
+        if res.status_code == 200:
+            return res.json()
+        else:
+            print(f"Failed to fetch streams for {activity_id}: {res.status_code}")
+            return None
+    except Exception as e:
+        print(f"Error fetching streams for {activity_id}: {e}")
+        return None
+
+def save_activities(activities, access_token):
+    """Saves activities and their streams to individual JSON files."""
     if not os.path.exists(ACTIVITIES_DIR):
         os.makedirs(ACTIVITIES_DIR)
         
@@ -68,14 +88,22 @@ def save_activities(activities):
         activity_id = activity['id']
         file_path = os.path.join(ACTIVITIES_DIR, f'{activity_id}.json')
         
-        # Only save if file doesn't exist or we want to update (optional logic)
-        # For backup, we might want to overwrite to get latest stats? 
-        # But usually activities don't change much after upload.
-        # Let's check if it exists to be efficient.
+        # Save activity summary
         if not os.path.exists(file_path):
             with open(file_path, 'w') as f:
                 json.dump(activity, f, indent=2)
             saved_count += 1
+            
+        # Check and save streams
+        streams_file_path = os.path.join(ACTIVITIES_DIR, f'{activity_id}_streams.json')
+        if not os.path.exists(streams_file_path):
+            streams = get_streams(activity_id, access_token)
+            if streams:
+                with open(streams_file_path, 'w') as f:
+                    json.dump(streams, f, indent=2)
+                print(f"Saved streams for {activity_id}")
+                # Rate limit safety
+                time.sleep(1) 
             
     print(f"New activities saved: {saved_count}")
 
@@ -85,8 +113,9 @@ def main():
         exit(1)
 
     token = get_access_token()
+
     activities = get_activities(token)
-    save_activities(activities)
+    save_activities(activities, token)
 
 if __name__ == "__main__":
     main()
