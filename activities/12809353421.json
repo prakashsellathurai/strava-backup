@@ -1,0 +1,62 @@
+{
+  "resource_state": 2,
+  "athlete": {
+    "id": 123537543,
+    "resource_state": 1
+  },
+  "name": "Morning Hike",
+  "distance": 9266.3,
+  "moving_time": 1824,
+  "elapsed_time": 2730,
+  "total_elevation_gain": 93.4,
+  "type": "Hike",
+  "sport_type": "Hike",
+  "device_name": "Strava App",
+  "id": 12809353421,
+  "start_date": "2024-11-03T01:58:53Z",
+  "start_date_local": "2024-11-03T07:28:53Z",
+  "timezone": "(GMT+05:30) Asia/Kolkata",
+  "utc_offset": 19800.0,
+  "location_city": null,
+  "location_state": null,
+  "location_country": null,
+  "achievement_count": 0,
+  "kudos_count": 1,
+  "comment_count": 0,
+  "athlete_count": 1,
+  "photo_count": 0,
+  "map": {
+    "id": "a12809353421",
+    "summary_polyline": "mpaaAuhi_N`B`@eJoAgAcBGROB?@BNCRBBH@BPAGMg@LxABN@w@?BCFOBBBI@@F@AJ|@Ei@w@NaRhHynCai@rbDb^EC?GBNPHe@XcRtHdTsN?IA@AG@YAYBEGI?JCC@E@@CFIADC?FG??CFAADCCBAADGC@CDl@CNDB@BCBCA?CDA@@A@EA?CBA@DC@CABG@BCB?EJGAOHBGFAAHACKEAFg@CE?IDAKm@GGA?KR@FEh@JV?BACANDBC@NEHHA?ABG@Q?CACI?G@ACDHEKBHAI?D@CAFE@ICCGW@@@UHYFID@BF@PBNC_@KMEBEJD@?GDGFFDt@B@AB@NBHF@DFAN@G@@E??CA^EL?AFJGBIZHMBD@C?ULILCOB?@F?BEEOa@K`AXUGI?CG@GLI",
+    "resource_state": 2
+  },
+  "trainer": false,
+  "commute": false,
+  "manual": false,
+  "private": false,
+  "visibility": "everyone",
+  "flagged": false,
+  "gear_id": null,
+  "start_latlng": [
+    10.828164,
+    78.696945
+  ],
+  "end_latlng": [
+    10.82641,
+    78.696917
+  ],
+  "average_speed": 5.08,
+  "max_speed": 17.177,
+  "has_heartrate": false,
+  "heartrate_opt_out": false,
+  "display_hide_heartrate_option": false,
+  "elev_high": 109.0,
+  "elev_low": 69.8,
+  "upload_id": 13658473077,
+  "upload_id_str": "13658473077",
+  "external_id": "b23cbb42-d2cf-4d08-9d99-fa976b299976-activity.fit",
+  "from_accepted_tag": false,
+  "pr_count": 0,
+  "total_photo_count": 0,
+  "has_kudoed": false
+}

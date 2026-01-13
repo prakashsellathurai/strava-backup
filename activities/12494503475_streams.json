@@ -1,0 +1,149 @@
+[
+  {
+    "type": "time",
+    "data": [
+      0,
+      9,
+      39,
+      52,
+      64,
+      94,
+      114,
+      124,
+      129,
+      163,
+      193,
+      211,
+      234
+    ],
+    "series_type": "distance",
+    "original_size": 13,
+    "resolution": "high"
+  },
+  {
+    "type": "distance",
+    "data": [
+      0.0,
+      0.0,
+      50.3,
+      50.3,
+      87.5,
+      87.5,
+      94.7,
+      100.4,
+      100.4,
+      117.1,
+      117.1,
+      117.1,
+      117.1
+    ],
+    "series_type": "distance",
+    "original_size": 13,
+    "resolution": "high"
+  },
+  {
+    "type": "altitude",
+    "data": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "series_type": "distance",
+    "original_size": 13,
+    "resolution": "high"
+  },
+  {
+    "type": "velocity_smooth",
+    "data": [
+      0.0,
+      0.0,
+      1.29,
+      1.17,
+      1.488,
+      0.886,
+      0.144,
+      0.43,
+      0.38,
+      0.428,
+      0.261,
+      0.0,
+      0.0
+    ],
+    "series_type": "distance",
+    "original_size": 13,
+    "resolution": "high"
+  },
+  {
+    "type": "heartrate",
+    "data": [
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "series_type": "distance",
+    "original_size": 13,
+    "resolution": "high"
+  },
+  {
+    "type": "moving",
+    "data": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "series_type": "distance",
+    "original_size": 13,
+    "resolution": "high"
+  },
+  {
+    "type": "grade_smooth",
+    "data": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "series_type": "distance",
+    "original_size": 13,
+    "resolution": "high"
+  }
+]

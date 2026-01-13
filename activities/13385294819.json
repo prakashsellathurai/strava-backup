@@ -1,0 +1,62 @@
+{
+  "resource_state": 2,
+  "athlete": {
+    "id": 123537543,
+    "resource_state": 1
+  },
+  "name": "Afternoon Hike",
+  "distance": 1967.9,
+  "moving_time": 2593,
+  "elapsed_time": 4004,
+  "total_elevation_gain": 14.4,
+  "type": "Hike",
+  "sport_type": "Hike",
+  "device_name": "Strava App",
+  "id": 13385294819,
+  "start_date": "2025-01-18T08:48:29Z",
+  "start_date_local": "2025-01-18T14:18:29Z",
+  "timezone": "(GMT+05:30) Asia/Kolkata",
+  "utc_offset": 19800.0,
+  "location_city": null,
+  "location_state": null,
+  "location_country": null,
+  "achievement_count": 0,
+  "kudos_count": 1,
+  "comment_count": 0,
+  "athlete_count": 1,
+  "photo_count": 0,
+  "map": {
+    "id": "a13385294819",
+    "summary_polyline": "quwiAomqcNDFLFHABGB??JFFCDBDCFJFH@JOF?BLATFJH@NEPQLIDKNMPe@LEDSAM?DDMZGDEASFGFAFTOVGR?FBDBABBTLDA@IHEAIEMFIFi@MWDw@C[Au@EW?[Gg@?YHu@?a@FS?MT[@IDGRIBGGQEA@BE?WUM_@OICM@ERDPGJ?GMAEUOGS?WNQEQOSBBIa@DOVKH?HITG?CG@AEIE@MFUFC`@B@A?KGOAUUQG]O[U_@SUe@o@GQU[Qg@Wa@",
+    "resource_state": 2
+  },
+  "trainer": false,
+  "commute": false,
+  "manual": false,
+  "private": false,
+  "visibility": "everyone",
+  "flagged": false,
+  "gear_id": null,
+  "start_latlng": [
+    12.250311,
+    79.395219
+  ],
+  "end_latlng": [
+    12.249952,
+    79.401822
+  ],
+  "average_speed": 0.759,
+  "max_speed": 1.96,
+  "has_heartrate": false,
+  "heartrate_opt_out": false,
+  "display_hide_heartrate_option": false,
+  "elev_high": 287.5,
+  "elev_low": 99.7,
+  "upload_id": 14276624003,
+  "upload_id_str": "14276624003",
+  "external_id": "3228b400-4976-47bd-82d5-7727b513d8b3-activity.fit",
+  "from_accepted_tag": false,
+  "pr_count": 0,
+  "total_photo_count": 0,
+  "has_kudoed": false
+}

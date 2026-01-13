@@ -1,0 +1,122 @@
+[
+  {
+    "type": "time",
+    "data": [
+      0,
+      35,
+      67,
+      71,
+      103,
+      251,
+      282,
+      384,
+      408,
+      439,
+      470,
+      508
+    ],
+    "series_type": "distance",
+    "original_size": 12,
+    "resolution": "high"
+  },
+  {
+    "type": "distance",
+    "data": [
+      0.0,
+      0.0,
+      1.8,
+      22.4,
+      22.4,
+      42.3,
+      42.3,
+      52.3,
+      72.2,
+      72.2,
+      133.9,
+      133.9
+    ],
+    "series_type": "distance",
+    "original_size": 12,
+    "resolution": "high"
+  },
+  {
+    "type": "altitude",
+    "data": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "series_type": "distance",
+    "original_size": 12,
+    "resolution": "high"
+  },
+  {
+    "type": "velocity_smooth",
+    "data": [
+      0.0,
+      0.0,
+      0.027,
+      0.622,
+      0.572,
+      0.111,
+      0.111,
+      0.075,
+      0.237,
+      0.362,
+      0.995,
+      0.894
+    ],
+    "series_type": "distance",
+    "original_size": 12,
+    "resolution": "high"
+  },
+  {
+    "type": "moving",
+    "data": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "series_type": "distance",
+    "original_size": 12,
+    "resolution": "high"
+  },
+  {
+    "type": "grade_smooth",
+    "data": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "series_type": "distance",
+    "original_size": 12,
+    "resolution": "high"
+  }
+]
